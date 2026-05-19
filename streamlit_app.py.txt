@@ -1,0 +1,24 @@
+import streamlit as st
+import pandas as pd
+
+st.title("Excel Processor")
+
+uploaded_file = st.file_uploader("Upload Excel File", type=["xlsx"])
+
+if uploaded_file:
+    df = pd.read_excel(uploaded_file)
+
+    df["Processed"] = "Done"
+
+    st.write(df)
+
+    output_file = "output.xlsx"
+    df.to_excel(output_file, index=False)
+
+    with open(output_file, "rb") as file:
+        st.download_button(
+            label="Download Output File",
+            data=file,
+            file_name="output.xlsx",
+            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        )
